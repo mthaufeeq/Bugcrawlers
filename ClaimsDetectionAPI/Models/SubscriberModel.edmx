@@ -1,0 +1,452 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="3.0" xmlns:edmx="http://schemas.microsoft.com/ado/2009/11/edmx">
+  <!-- EF Runtime content -->
+  <edmx:Runtime>
+    <!-- SSDL content -->
+    <edmx:StorageModels>
+    <Schema Namespace="GlobalClaimsModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+        <EntityType Name="ref_ClaimStatus">
+          <Key>
+            <PropertyRef Name="ClaimStatusId" />
+          </Key>
+          <Property Name="ClaimStatusId" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="ClaimStatusName" Type="nvarchar" MaxLength="199" Nullable="false" />
+        </EntityType>
+        <EntityType Name="ref_Customer">
+          <Key>
+            <PropertyRef Name="CustomerId" />
+          </Key>
+          <Property Name="CustomerId" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="FName" Type="nvarchar" MaxLength="199" Nullable="false" />
+          <Property Name="Lname" Type="nvarchar" MaxLength="199" Nullable="false" />
+          <Property Name="SSN" Type="nvarchar" MaxLength="199" Nullable="false" />
+          <Property Name="DOB" Type="date" Nullable="false" />
+          <Property Name="Add1" Type="nvarchar" MaxLength="199" />
+          <Property Name="City" Type="nvarchar" MaxLength="199" />
+          <Property Name="State" Type="nvarchar" MaxLength="199" />
+          <Property Name="ZIP" Type="nvarchar" MaxLength="9" />
+          <Property Name="Country" Type="nvarchar" MaxLength="199" />
+          <Property Name="Mobile" Type="nvarchar" MaxLength="199" />
+          <Property Name="Email" Type="nvarchar" MaxLength="199" />
+        </EntityType>
+        <EntityType Name="ref_InsuranceCompany">
+          <Key>
+            <PropertyRef Name="CompanyID" />
+          </Key>
+          <Property Name="CompanyID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="CompanyName" Type="nvarchar" MaxLength="199" Nullable="false" />
+          <Property Name="RegisterationNumber" Type="nvarchar" MaxLength="199" Nullable="false" />
+          <Property Name="Add1" Type="nvarchar" MaxLength="199" />
+          <Property Name="Add2" Type="nvarchar" MaxLength="199" />
+          <Property Name="City" Type="nvarchar" MaxLength="199" />
+          <Property Name="State" Type="nvarchar" MaxLength="199" />
+          <Property Name="ZIP" Type="nvarchar" MaxLength="9" />
+          <Property Name="Country" Type="nvarchar" MaxLength="199" />
+          <Property Name="Website" Type="nvarchar" MaxLength="199" />
+        </EntityType>
+        <EntityType Name="ref_Subscribers">
+          <Key>
+            <PropertyRef Name="SubscriberID" />
+          </Key>
+          <Property Name="SubscriberID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="SubscriberName" Type="nvarchar" MaxLength="100" Nullable="false" />
+          <Property Name="CompanyID" Type="int" />
+        </EntityType>
+        <EntityType Name="trn_Claim">
+          <Key>
+            <PropertyRef Name="ClaimId" />
+          </Key>
+          <Property Name="ClaimId" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="CustomerId" Type="int" Nullable="false" />
+          <Property Name="PolicyID" Type="int" Nullable="false" />
+          <Property Name="ClaimRefernceNumber" Type="nvarchar" MaxLength="199" Nullable="false" />
+          <Property Name="ClaimDate" Type="date" Nullable="false" />
+          <Property Name="ClaimDetails" Type="xml" />
+          <Property Name="ClaimStatusId" Type="int" Nullable="false" />
+        </EntityType>
+        <EntityType Name="trn_Policy">
+          <Key>
+            <PropertyRef Name="PolicyID" />
+          </Key>
+          <Property Name="PolicyID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="CustomerId" Type="int" Nullable="false" />
+          <Property Name="PolicyName" Type="nvarchar" MaxLength="199" Nullable="false" />
+          <Property Name="PolicyType" Type="nvarchar" MaxLength="199" Nullable="false" />
+          <Property Name="PolicyReferenceNumber" Type="nvarchar" MaxLength="199" Nullable="false" />
+          <Property Name="PolicyDetails" Type="xml" Nullable="false" />
+          <Property Name="PolictStartDate" Type="date" Nullable="false" />
+          <Property Name="PolictEndDate" Type="date" Nullable="false" />
+          <Property Name="CompanyID" Type="int" Nullable="false" />
+        </EntityType>
+        <Association Name="FK__trn_Claim__Claim__04E4BC85">
+          <End Role="ref_ClaimStatus" Type="Self.ref_ClaimStatus" Multiplicity="1" />
+          <End Role="trn_Claim" Type="Self.trn_Claim" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="ref_ClaimStatus">
+              <PropertyRef Name="ClaimStatusId" />
+            </Principal>
+            <Dependent Role="trn_Claim">
+              <PropertyRef Name="ClaimStatusId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__trn_Claim__Custo__02FC7413">
+          <End Role="ref_Customer" Type="Self.ref_Customer" Multiplicity="1" />
+          <End Role="trn_Claim" Type="Self.trn_Claim" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="ref_Customer">
+              <PropertyRef Name="CustomerId" />
+            </Principal>
+            <Dependent Role="trn_Claim">
+              <PropertyRef Name="CustomerId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__trn_Claim__Polic__03F0984C">
+          <End Role="trn_Policy" Type="Self.trn_Policy" Multiplicity="1" />
+          <End Role="trn_Claim" Type="Self.trn_Claim" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="trn_Policy">
+              <PropertyRef Name="PolicyID" />
+            </Principal>
+            <Dependent Role="trn_Claim">
+              <PropertyRef Name="PolicyID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__trn_Polic__Compa__00200768">
+          <End Role="ref_InsuranceCompany" Type="Self.ref_InsuranceCompany" Multiplicity="1" />
+          <End Role="trn_Policy" Type="Self.trn_Policy" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="ref_InsuranceCompany">
+              <PropertyRef Name="CompanyID" />
+            </Principal>
+            <Dependent Role="trn_Policy">
+              <PropertyRef Name="CompanyID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__trn_Polic__Custo__7F2BE32F">
+          <End Role="ref_Customer" Type="Self.ref_Customer" Multiplicity="1" />
+          <End Role="trn_Policy" Type="Self.trn_Policy" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="ref_Customer">
+              <PropertyRef Name="CustomerId" />
+            </Principal>
+            <Dependent Role="trn_Policy">
+              <PropertyRef Name="CustomerId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityContainer Name="GlobalClaimsModelStoreContainer">
+          <EntitySet Name="ref_ClaimStatus" EntityType="Self.ref_ClaimStatus" Schema="GlobalClaims" store:Type="Tables" />
+          <EntitySet Name="ref_Customer" EntityType="Self.ref_Customer" Schema="GlobalClaims" store:Type="Tables" />
+          <EntitySet Name="ref_InsuranceCompany" EntityType="Self.ref_InsuranceCompany" Schema="GlobalClaims" store:Type="Tables" />
+          <EntitySet Name="ref_Subscribers" EntityType="Self.ref_Subscribers" Schema="GlobalClaims" store:Type="Tables" />
+          <EntitySet Name="trn_Claim" EntityType="Self.trn_Claim" Schema="GlobalClaims" store:Type="Tables" />
+          <EntitySet Name="trn_Policy" EntityType="Self.trn_Policy" Schema="GlobalClaims" store:Type="Tables" />
+          <AssociationSet Name="FK__trn_Claim__Claim__04E4BC85" Association="Self.FK__trn_Claim__Claim__04E4BC85">
+            <End Role="ref_ClaimStatus" EntitySet="ref_ClaimStatus" />
+            <End Role="trn_Claim" EntitySet="trn_Claim" />
+          </AssociationSet>
+          <AssociationSet Name="FK__trn_Claim__Custo__02FC7413" Association="Self.FK__trn_Claim__Custo__02FC7413">
+            <End Role="ref_Customer" EntitySet="ref_Customer" />
+            <End Role="trn_Claim" EntitySet="trn_Claim" />
+          </AssociationSet>
+          <AssociationSet Name="FK__trn_Claim__Polic__03F0984C" Association="Self.FK__trn_Claim__Polic__03F0984C">
+            <End Role="trn_Policy" EntitySet="trn_Policy" />
+            <End Role="trn_Claim" EntitySet="trn_Claim" />
+          </AssociationSet>
+          <AssociationSet Name="FK__trn_Polic__Compa__00200768" Association="Self.FK__trn_Polic__Compa__00200768">
+            <End Role="ref_InsuranceCompany" EntitySet="ref_InsuranceCompany" />
+            <End Role="trn_Policy" EntitySet="trn_Policy" />
+          </AssociationSet>
+          <AssociationSet Name="FK__trn_Polic__Custo__7F2BE32F" Association="Self.FK__trn_Polic__Custo__7F2BE32F">
+            <End Role="ref_Customer" EntitySet="ref_Customer" />
+            <End Role="trn_Policy" EntitySet="trn_Policy" />
+          </AssociationSet>
+        </EntityContainer>
+      </Schema></edmx:StorageModels>
+    <!-- CSDL content -->
+    <edmx:ConceptualModels>
+      <Schema Namespace="GlobalClaimsModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
+        <EntityType Name="ref_ClaimStatus">
+          <Key>
+            <PropertyRef Name="ClaimStatusId" />
+          </Key>
+          <Property Name="ClaimStatusId" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="ClaimStatusName" Type="String" MaxLength="199" FixedLength="false" Unicode="true" Nullable="false" />
+          <NavigationProperty Name="trn_Claim" Relationship="Self.FK__trn_Claim__Claim__04E4BC85" FromRole="ref_ClaimStatus" ToRole="trn_Claim" />
+        </EntityType>
+        <EntityType Name="ref_Customer">
+          <Key>
+            <PropertyRef Name="CustomerId" />
+          </Key>
+          <Property Name="CustomerId" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="FName" Type="String" MaxLength="199" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="Lname" Type="String" MaxLength="199" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="SSN" Type="String" MaxLength="199" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="DOB" Type="DateTime" Nullable="false" Precision="0" />
+          <Property Name="Add1" Type="String" MaxLength="199" FixedLength="false" Unicode="true" />
+          <Property Name="City" Type="String" MaxLength="199" FixedLength="false" Unicode="true" />
+          <Property Name="State" Type="String" MaxLength="199" FixedLength="false" Unicode="true" />
+          <Property Name="ZIP" Type="String" MaxLength="9" FixedLength="false" Unicode="true" />
+          <Property Name="Country" Type="String" MaxLength="199" FixedLength="false" Unicode="true" />
+          <Property Name="Mobile" Type="String" MaxLength="199" FixedLength="false" Unicode="true" />
+          <Property Name="Email" Type="String" MaxLength="199" FixedLength="false" Unicode="true" />
+          <NavigationProperty Name="trn_Claim" Relationship="Self.FK__trn_Claim__Custo__02FC7413" FromRole="ref_Customer" ToRole="trn_Claim" />
+          <NavigationProperty Name="trn_Policy" Relationship="Self.FK__trn_Polic__Custo__7F2BE32F" FromRole="ref_Customer" ToRole="trn_Policy" />
+        </EntityType>
+        <EntityType Name="ref_InsuranceCompany">
+          <Key>
+            <PropertyRef Name="CompanyID" />
+          </Key>
+          <Property Name="CompanyID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="CompanyName" Type="String" MaxLength="199" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="RegisterationNumber" Type="String" MaxLength="199" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="Add1" Type="String" MaxLength="199" FixedLength="false" Unicode="true" />
+          <Property Name="Add2" Type="String" MaxLength="199" FixedLength="false" Unicode="true" />
+          <Property Name="City" Type="String" MaxLength="199" FixedLength="false" Unicode="true" />
+          <Property Name="State" Type="String" MaxLength="199" FixedLength="false" Unicode="true" />
+          <Property Name="ZIP" Type="String" MaxLength="9" FixedLength="false" Unicode="true" />
+          <Property Name="Country" Type="String" MaxLength="199" FixedLength="false" Unicode="true" />
+          <Property Name="Website" Type="String" MaxLength="199" FixedLength="false" Unicode="true" />
+          <NavigationProperty Name="trn_Policy" Relationship="Self.FK__trn_Polic__Compa__00200768" FromRole="ref_InsuranceCompany" ToRole="trn_Policy" />
+        </EntityType>
+        <EntityType Name="ref_Subscribers">
+          <Key>
+            <PropertyRef Name="SubscriberID" />
+          </Key>
+          <Property Name="SubscriberID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="SubscriberName" Type="String" MaxLength="100" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="CompanyID" Type="Int32" />
+        </EntityType>
+        <EntityType Name="trn_Claim">
+          <Key>
+            <PropertyRef Name="ClaimId" />
+          </Key>
+          <Property Name="ClaimId" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="CustomerId" Type="Int32" Nullable="false" />
+          <Property Name="PolicyID" Type="Int32" Nullable="false" />
+          <Property Name="ClaimRefernceNumber" Type="String" MaxLength="199" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="ClaimDate" Type="DateTime" Nullable="false" Precision="0" />
+          <Property Name="ClaimDetails" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="ClaimStatusId" Type="Int32" Nullable="false" />
+          <NavigationProperty Name="ref_ClaimStatus" Relationship="Self.FK__trn_Claim__Claim__04E4BC85" FromRole="trn_Claim" ToRole="ref_ClaimStatus" />
+          <NavigationProperty Name="ref_Customer" Relationship="Self.FK__trn_Claim__Custo__02FC7413" FromRole="trn_Claim" ToRole="ref_Customer" />
+          <NavigationProperty Name="trn_Policy" Relationship="Self.FK__trn_Claim__Polic__03F0984C" FromRole="trn_Claim" ToRole="trn_Policy" />
+        </EntityType>
+        <EntityType Name="trn_Policy">
+          <Key>
+            <PropertyRef Name="PolicyID" />
+          </Key>
+          <Property Name="PolicyID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="CustomerId" Type="Int32" Nullable="false" />
+          <Property Name="PolicyName" Type="String" MaxLength="199" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="PolicyType" Type="String" MaxLength="199" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="PolicyReferenceNumber" Type="String" MaxLength="199" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="PolicyDetails" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="PolictStartDate" Type="DateTime" Nullable="false" Precision="0" />
+          <Property Name="PolictEndDate" Type="DateTime" Nullable="false" Precision="0" />
+          <Property Name="CompanyID" Type="Int32" Nullable="false" />
+          <NavigationProperty Name="ref_Customer" Relationship="Self.FK__trn_Polic__Custo__7F2BE32F" FromRole="trn_Policy" ToRole="ref_Customer" />
+          <NavigationProperty Name="ref_InsuranceCompany" Relationship="Self.FK__trn_Polic__Compa__00200768" FromRole="trn_Policy" ToRole="ref_InsuranceCompany" />
+          <NavigationProperty Name="trn_Claim" Relationship="Self.FK__trn_Claim__Polic__03F0984C" FromRole="trn_Policy" ToRole="trn_Claim" />
+        </EntityType>
+        <Association Name="FK__trn_Claim__Claim__04E4BC85">
+          <End Role="ref_ClaimStatus" Type="Self.ref_ClaimStatus" Multiplicity="1" />
+          <End Role="trn_Claim" Type="Self.trn_Claim" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="ref_ClaimStatus">
+              <PropertyRef Name="ClaimStatusId" />
+            </Principal>
+            <Dependent Role="trn_Claim">
+              <PropertyRef Name="ClaimStatusId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__trn_Claim__Custo__02FC7413">
+          <End Role="ref_Customer" Type="Self.ref_Customer" Multiplicity="1" />
+          <End Role="trn_Claim" Type="Self.trn_Claim" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="ref_Customer">
+              <PropertyRef Name="CustomerId" />
+            </Principal>
+            <Dependent Role="trn_Claim">
+              <PropertyRef Name="CustomerId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__trn_Polic__Custo__7F2BE32F">
+          <End Role="ref_Customer" Type="Self.ref_Customer" Multiplicity="1" />
+          <End Role="trn_Policy" Type="Self.trn_Policy" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="ref_Customer">
+              <PropertyRef Name="CustomerId" />
+            </Principal>
+            <Dependent Role="trn_Policy">
+              <PropertyRef Name="CustomerId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__trn_Polic__Compa__00200768">
+          <End Role="ref_InsuranceCompany" Type="Self.ref_InsuranceCompany" Multiplicity="1" />
+          <End Role="trn_Policy" Type="Self.trn_Policy" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="ref_InsuranceCompany">
+              <PropertyRef Name="CompanyID" />
+            </Principal>
+            <Dependent Role="trn_Policy">
+              <PropertyRef Name="CompanyID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__trn_Claim__Polic__03F0984C">
+          <End Role="trn_Policy" Type="Self.trn_Policy" Multiplicity="1" />
+          <End Role="trn_Claim" Type="Self.trn_Claim" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="trn_Policy">
+              <PropertyRef Name="PolicyID" />
+            </Principal>
+            <Dependent Role="trn_Claim">
+              <PropertyRef Name="PolicyID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityContainer Name="SubscriberDBContext" annotation:LazyLoadingEnabled="true">
+          <EntitySet Name="ref_ClaimStatus" EntityType="Self.ref_ClaimStatus" />
+          <EntitySet Name="ref_Customer" EntityType="Self.ref_Customer" />
+          <EntitySet Name="ref_InsuranceCompany" EntityType="Self.ref_InsuranceCompany" />
+          <EntitySet Name="ref_Subscribers" EntityType="Self.ref_Subscribers" />
+          <EntitySet Name="trn_Claim" EntityType="Self.trn_Claim" />
+          <EntitySet Name="trn_Policy" EntityType="Self.trn_Policy" />
+          <AssociationSet Name="FK__trn_Claim__Claim__04E4BC85" Association="Self.FK__trn_Claim__Claim__04E4BC85">
+            <End Role="ref_ClaimStatus" EntitySet="ref_ClaimStatus" />
+            <End Role="trn_Claim" EntitySet="trn_Claim" />
+          </AssociationSet>
+          <AssociationSet Name="FK__trn_Claim__Custo__02FC7413" Association="Self.FK__trn_Claim__Custo__02FC7413">
+            <End Role="ref_Customer" EntitySet="ref_Customer" />
+            <End Role="trn_Claim" EntitySet="trn_Claim" />
+          </AssociationSet>
+          <AssociationSet Name="FK__trn_Polic__Custo__7F2BE32F" Association="Self.FK__trn_Polic__Custo__7F2BE32F">
+            <End Role="ref_Customer" EntitySet="ref_Customer" />
+            <End Role="trn_Policy" EntitySet="trn_Policy" />
+          </AssociationSet>
+          <AssociationSet Name="FK__trn_Polic__Compa__00200768" Association="Self.FK__trn_Polic__Compa__00200768">
+            <End Role="ref_InsuranceCompany" EntitySet="ref_InsuranceCompany" />
+            <End Role="trn_Policy" EntitySet="trn_Policy" />
+          </AssociationSet>
+          <AssociationSet Name="FK__trn_Claim__Polic__03F0984C" Association="Self.FK__trn_Claim__Polic__03F0984C">
+            <End Role="trn_Policy" EntitySet="trn_Policy" />
+            <End Role="trn_Claim" EntitySet="trn_Claim" />
+          </AssociationSet>
+        </EntityContainer>
+      </Schema>
+    </edmx:ConceptualModels>
+    <!-- C-S mapping content -->
+    <edmx:Mappings>
+      <Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
+        <EntityContainerMapping StorageEntityContainer="GlobalClaimsModelStoreContainer" CdmEntityContainer="SubscriberDBContext">
+          <EntitySetMapping Name="ref_ClaimStatus">
+            <EntityTypeMapping TypeName="GlobalClaimsModel.ref_ClaimStatus">
+              <MappingFragment StoreEntitySet="ref_ClaimStatus">
+                <ScalarProperty Name="ClaimStatusId" ColumnName="ClaimStatusId" />
+                <ScalarProperty Name="ClaimStatusName" ColumnName="ClaimStatusName" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="ref_Customer">
+            <EntityTypeMapping TypeName="GlobalClaimsModel.ref_Customer">
+              <MappingFragment StoreEntitySet="ref_Customer">
+                <ScalarProperty Name="CustomerId" ColumnName="CustomerId" />
+                <ScalarProperty Name="FName" ColumnName="FName" />
+                <ScalarProperty Name="Lname" ColumnName="Lname" />
+                <ScalarProperty Name="SSN" ColumnName="SSN" />
+                <ScalarProperty Name="DOB" ColumnName="DOB" />
+                <ScalarProperty Name="Add1" ColumnName="Add1" />
+                <ScalarProperty Name="City" ColumnName="City" />
+                <ScalarProperty Name="State" ColumnName="State" />
+                <ScalarProperty Name="ZIP" ColumnName="ZIP" />
+                <ScalarProperty Name="Country" ColumnName="Country" />
+                <ScalarProperty Name="Mobile" ColumnName="Mobile" />
+                <ScalarProperty Name="Email" ColumnName="Email" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="ref_InsuranceCompany">
+            <EntityTypeMapping TypeName="GlobalClaimsModel.ref_InsuranceCompany">
+              <MappingFragment StoreEntitySet="ref_InsuranceCompany">
+                <ScalarProperty Name="CompanyID" ColumnName="CompanyID" />
+                <ScalarProperty Name="CompanyName" ColumnName="CompanyName" />
+                <ScalarProperty Name="RegisterationNumber" ColumnName="RegisterationNumber" />
+                <ScalarProperty Name="Add1" ColumnName="Add1" />
+                <ScalarProperty Name="Add2" ColumnName="Add2" />
+                <ScalarProperty Name="City" ColumnName="City" />
+                <ScalarProperty Name="State" ColumnName="State" />
+                <ScalarProperty Name="ZIP" ColumnName="ZIP" />
+                <ScalarProperty Name="Country" ColumnName="Country" />
+                <ScalarProperty Name="Website" ColumnName="Website" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="ref_Subscribers">
+            <EntityTypeMapping TypeName="GlobalClaimsModel.ref_Subscribers">
+              <MappingFragment StoreEntitySet="ref_Subscribers">
+                <ScalarProperty Name="CompanyID" ColumnName="CompanyID" />
+                <ScalarProperty Name="SubscriberID" ColumnName="SubscriberID" />
+                <ScalarProperty Name="SubscriberName" ColumnName="SubscriberName" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="trn_Claim">
+            <EntityTypeMapping TypeName="GlobalClaimsModel.trn_Claim">
+              <MappingFragment StoreEntitySet="trn_Claim">
+                <ScalarProperty Name="ClaimId" ColumnName="ClaimId" />
+                <ScalarProperty Name="CustomerId" ColumnName="CustomerId" />
+                <ScalarProperty Name="PolicyID" ColumnName="PolicyID" />
+                <ScalarProperty Name="ClaimRefernceNumber" ColumnName="ClaimRefernceNumber" />
+                <ScalarProperty Name="ClaimDate" ColumnName="ClaimDate" />
+                <ScalarProperty Name="ClaimDetails" ColumnName="ClaimDetails" />
+                <ScalarProperty Name="ClaimStatusId" ColumnName="ClaimStatusId" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="trn_Policy">
+            <EntityTypeMapping TypeName="GlobalClaimsModel.trn_Policy">
+              <MappingFragment StoreEntitySet="trn_Policy">
+                <ScalarProperty Name="PolicyID" ColumnName="PolicyID" />
+                <ScalarProperty Name="CustomerId" ColumnName="CustomerId" />
+                <ScalarProperty Name="PolicyName" ColumnName="PolicyName" />
+                <ScalarProperty Name="PolicyType" ColumnName="PolicyType" />
+                <ScalarProperty Name="PolicyReferenceNumber" ColumnName="PolicyReferenceNumber" />
+                <ScalarProperty Name="PolicyDetails" ColumnName="PolicyDetails" />
+                <ScalarProperty Name="PolictStartDate" ColumnName="PolictStartDate" />
+                <ScalarProperty Name="PolictEndDate" ColumnName="PolictEndDate" />
+                <ScalarProperty Name="CompanyID" ColumnName="CompanyID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+        </EntityContainerMapping>
+      </Mapping>
+    </edmx:Mappings>
+  </edmx:Runtime>
+  <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
+    <Connection>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="MetadataArtifactProcessing" Value="EmbedInOutputAssembly" />
+      </DesignerInfoPropertySet>
+    </Connection>
+    <Options>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="ValidateOnBuild" Value="true" />
+        <DesignerProperty Name="EnablePluralization" Value="true" />
+        <DesignerProperty Name="IncludeForeignKeysInModel" Value="true" />
+        <DesignerProperty Name="UseLegacyProvider" Value="false" />
+        <DesignerProperty Name="CodeGenerationStrategy" Value="None" />
+      </DesignerInfoPropertySet>
+    </Options>
+    <!-- Diagram content (shape and connector positions) -->
+    <Diagrams></Diagrams>
+  </Designer>
+</edmx:Edmx>
